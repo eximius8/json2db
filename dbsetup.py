@@ -1,3 +1,4 @@
+"""Классы для создания sql таблиц."""
 from peewee import (
     SqliteDatabase,
     Model,
@@ -12,6 +13,7 @@ db = SqliteDatabase('warehouse.db')
 
 
 class Goods(Model):
+    """ORM класс для продуктов."""
 
     name = CharField(help_text='наименование товара')
     package_height = FloatField(help_text='высота упакованного товара')
@@ -23,6 +25,7 @@ class Goods(Model):
 
 
 class ShopsGoods(Model):
+    """ORM класс для магазинов."""
 
     location = CharField(help_text='адрес магазина')
     amount = IntegerField(help_text='количество этого товара в этом магазине')

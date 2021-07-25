@@ -1,10 +1,11 @@
+"""Преобразование данных json в базу sql."""
 from dbsetup import Goods, ShopsGoods
 import json
 from jsonschema import validate, exceptions
 
 
-def json_to_db(filepath):
-
+def json_to_db(filepath: str) -> None:
+    """Функция преобразующая json данные из файла в базу sql."""
     with open('goods.schema.json', 'r') as fschema:
         schema = json.loads(fschema.read())
 
