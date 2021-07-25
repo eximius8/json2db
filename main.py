@@ -12,13 +12,13 @@ def json_to_db(filepath):
         try:
             data = json.loads(fdata.read())
         except json.decoder.JSONDecodeError:
-            raise Exception("json файл содержит синтаксическую ошибку.")   
+            raise Exception("json файл содержит синтаксическую ошибку.")
 
     try:
         validate(instance=data, schema=schema)
     except exceptions.ValidationError:
         raise Exception("Неверный формат файла json. Отсутсвуют обязательные поля.")
-    
+
     good = Goods.get_or_none(id=data['id'])
     if good:
         good.name = data['name']
@@ -26,23 +26,19 @@ def json_to_db(filepath):
         good.package_width = data['package_params']['width']
         good.save()
     else:
-        good = Goods.create(id=data['id'], 
-                name = data['name'], 
-                package_height = data['package_params']['height'],
-                package_width = data['package_params']['width'])
+        good = Goods.create(
+                    id=data['id'],
+                    name=data['name'],
+                    package_height=data['package_params']['height'],
+                    package_width=data['package_params']['width'])
     dquery = ShopsGoods.delete().where(ShopsGoods.id_good == good.id)
-    dquery.execute() 
+    dquery.execute()
     for shop in data['location_and_quantity']:
         ShopsGoods.create(
             location=shop['location'],
             amount=shop['amount'],
-            id_good=good
+            id_good=good.id
         )
-
-    
-
-
-    
 
 
 json_to_db('sample.json')
