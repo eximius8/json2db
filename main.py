@@ -1,19 +1,48 @@
 from dbsetup import Goods, ShopsGoods
 import json
-from jsonschema import validate
+from jsonschema import validate, exceptions
 
 
-with open('goods.schema.json', 'r') as fschema:
-    schema = json.loads(fschema.read())
+def json_to_db(filepath):
 
-with open('sample.json', 'r') as fdata:
+    with open('goods.schema.json', 'r') as fschema:
+        schema = json.loads(fschema.read())
+
+    with open(filepath, 'r') as fdata:
+        try:
+            data = json.loads(fdata.read())
+        except json.decoder.JSONDecodeError:
+            raise Exception("json файл содержит синтаксическую ошибку.")   
+
     try:
-        data = json.loads(fdata.read())
-    except json.decoder.JSONDecodeError:
-        raise Exception("Неверный формат файла json")
+        validate(instance=data, schema=schema)
+    except exceptions.ValidationError:
+        raise Exception("Неверный формат файла json. Отсутсвуют обязательные поля.")
+    
+    good = Goods.get_or_none(id=data['id'])
+    if good:
+        good.name = data['name']
+        good.package_height = data['package_params']['height']
+        good.package_width = data['package_params']['width']
+        good.save()
+    else:
+        good = Goods.create(id=data['id'], 
+                name = data['name'], 
+                package_height = data['package_params']['height'],
+                package_width = data['package_params']['width'])
+    dquery = ShopsGoods.delete().where(ShopsGoods.id_good == good.id)
+    dquery.execute() 
+    for shop in data['location_and_quantity']:
+        ShopsGoods.create(
+            location=shop['location'],
+            amount=shop['amount'],
+            id_good=good
+        )
+
     
 
 
-validate(instance=data, schema=schema)
+    
 
-print(data['id'])
+
+json_to_db('sample.json')

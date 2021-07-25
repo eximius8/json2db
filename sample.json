@@ -1,9 +1,9 @@
     {
-        "id": 123,
+        "id": 12,
         "name": "Телевизор",
         "package_params": {
-            "width": 5,
-            "height": 10
+            "width": 5,            
+            "height": 50
         },
         "location_and_quantity": [
             {
