@@ -8,11 +8,11 @@
         "location_and_quantity": [
             {
                 "location": "Магазин на Ленина",
-                "amount": 7
+                "amount": 5
             },
             {
                 "location": "Магазин в центре",
-                "amount": 3
+                "amount": 78
             }
         ]
     }
