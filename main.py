@@ -18,7 +18,7 @@ def json_to_db(filepath: str) -> None:
     try:
         validate(instance=data, schema=schema)
     except exceptions.ValidationError:
-        raise Exception("Неверный формат файла json. Отсутсвуют обязательные поля.")
+        raise Exception("Неверный формат файла json. Отсутсвуют обязательные поля")
 
     good = Goods.get_or_none(id=data['id'])
     if good:

@@ -13,3 +13,4 @@ six==1.16.0
 toml==0.10.2
 typing-extensions==3.10.0.0
 vulture==2.3
+tox==3.24.0
