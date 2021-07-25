@@ -3,3 +3,4 @@ flake8
 pep257
 vulture
 mypy
+jsonschema

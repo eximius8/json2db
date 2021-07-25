@@ -7,6 +7,7 @@ from peewee import (
     IntegerField
 )
 
+
 db = SqliteDatabase('warehouse.db')
 
 class Goods(Model):
